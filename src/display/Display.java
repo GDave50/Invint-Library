@@ -3,7 +3,6 @@ package display;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.SwingUtilities;
 import javax.swing.Timer;
 
 /**
@@ -16,7 +15,7 @@ public abstract class Display extends Window implements Runnable {
 	private final int fps;
 	
 	/**
-	 * Creates a fullscreen display.
+	 * Creates a windowed-borderless fullscreen display.
 	 * @param title title of the window
 	 * @param fps frames per second for the display
 	 */
@@ -42,12 +41,13 @@ public abstract class Display extends Window implements Runnable {
 	 */
 	@Override
 	public void run() {
+		show();
+		
 		new Timer(1000 / fps, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				tick();
-				
-				SwingUtilities.invokeLater(() -> repaint());
+				repaint();
 			}
 		}).start();
 		
@@ -60,8 +60,5 @@ public abstract class Display extends Window implements Runnable {
 	 */
 	public abstract void tick();
 	
-	/**
-	 * @return display FPS
-	 */
 	public int getFPS() { return fps; }
 }
